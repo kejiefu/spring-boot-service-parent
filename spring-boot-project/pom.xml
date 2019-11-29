@@ -16,7 +16,6 @@
 
     <modules>
         <module>spring-boot-scaffold</module>
-        <module>spring-boot-file</module>
         <module>spring-boot-spider-man</module>
         <module>spring-boot-netty</module>
         <module>spring-boot-websocket</module>
