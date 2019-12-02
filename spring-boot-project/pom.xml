@@ -24,6 +24,7 @@
         <module>spring-boot-admin</module>
         <module>spring-boot-redis</module>
         <module>spring-boot-webflux</module>
+        <module>spring-boot-kafka</module>
     </modules>
 
     <!-- parent 总依赖 -->
