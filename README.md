@@ -20,6 +20,8 @@ spring-boot-websocket:基于websocket的聊天
 
 spring-boot-admin:spring-boot的监控项目
 
+spring-boot-kafka:kafka项目
+
 
 
 
