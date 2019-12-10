@@ -22,6 +22,9 @@ spring-boot-admin:spring-boot的监控项目
 
 spring-boot-kafka:kafka项目
 
+spring-boot-elasticsearch:elasticsearch项目
+
+spring-boot-jpa:jpa的基本操作
 
 
 
