@@ -25,6 +25,8 @@
         <module>spring-boot-redis</module>
         <module>spring-boot-webflux</module>
         <module>spring-boot-kafka</module>
+        <module>spring-boot-elasticsearch</module>
+        <module>spring-boot-jpa</module>
     </modules>
 
     <!-- parent 总依赖 -->
