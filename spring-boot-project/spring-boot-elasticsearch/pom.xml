@@ -20,6 +20,8 @@
         <build.skip.install>true</build.skip.install>
         <build.skip.deploy>true</build.skip.deploy>
         <build.skip.assembly>false</build.skip.assembly>
+<!--        <elasticsearch.version>6.4.2</elasticsearch.version>
+        <spring.data.elasticsearch.version>3.1.6.RELEASE</spring.data.elasticsearch.version>-->
     </properties>
 
     <artifactId>spring-boot-elasticsearch</artifactId>
@@ -46,7 +48,42 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.22</version>
+            <version>1.2.61</version>
+        </dependency>
+        <!--elasticsearch 这些依赖在spring-boot-starter-data-elasticsearch里面,如果需要就覆盖配置-->
+<!--        <dependency>
+            <groupId>org.elasticsearch</groupId>
+            <artifactId>elasticsearch</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>transport</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.plugin</groupId>
+            <artifactId>transport-netty4-client</artifactId>
+            <version>${elasticsearch.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-elasticsearch</artifactId>
+            <version>${spring.data.elasticsearch.version}</version>
+        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
     </dependencies>
     <build>
