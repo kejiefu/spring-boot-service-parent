@@ -6,8 +6,11 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 
+/**
+ * ElasticSearch在7.X版本去掉type
+ */
 @Data
-@Document(indexName = "commodity", shards = 2, replicas = 0)
+@Document(indexName = "commodity", shards = 1, replicas = 0)
 public class Commodity implements Serializable {
 
     @Id

@@ -1,6 +1,7 @@
 package com.mountain.elasticsearch.service.impl;
 
 import com.mountain.elasticsearch.model.Commodity;
+import com.mountain.elasticsearch.repository.UserRepository;
 import com.mountain.elasticsearch.service.CommodityService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,6 +22,9 @@ public class CommodityServiceImplTest {
 
     @Autowired
     private CommodityService commodityService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Test
     public void contextLoads() {
@@ -59,9 +63,10 @@ public class CommodityServiceImplTest {
         commodity4.setName("元气吐司1850g");
         commodity4.setCategory("101");
         commodity4.setPrice(500);
-        commodity4.setBrand("巧克力味12");
+        commodity4.setBrand("巧克力味");
         Commodity result = commodityService.save(commodity4);
         System.out.println(result);
+
     }
 
     @Test
