@@ -1,7 +1,7 @@
 package com.mountain.jpa.serivice;
 
 
-import com.mountain.jpa.controller.vo.UserDetailVo;
+import com.mountain.jpa.controller.vo.UserDetailVO;
 import com.mountain.jpa.dao.entity.UserDetail;
 import com.mountain.jpa.dao.repository.UserDetailRepository;
 import com.mysql.cj.util.StringUtils;
@@ -21,7 +21,7 @@ public class UserDetailService  {
     @Resource
     private UserDetailRepository userDetailRepository;
 
-    public Page<UserDetail> findByCondition(UserDetailVo userDetailVo, Pageable pageable){
+    public Page<UserDetail> findByCondition(UserDetailVO userDetailVo, Pageable pageable){
 
         return userDetailRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<Predicate>();

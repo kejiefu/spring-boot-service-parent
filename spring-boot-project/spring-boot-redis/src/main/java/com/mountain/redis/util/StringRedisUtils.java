@@ -1,4 +1,4 @@
-package com.mountain.redis.utils;
+package com.mountain.redis.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.DataType;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2019/10/24 0024
  */
 @Component
-public class StringRedisUtil {
+public class StringRedisUtils {
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;

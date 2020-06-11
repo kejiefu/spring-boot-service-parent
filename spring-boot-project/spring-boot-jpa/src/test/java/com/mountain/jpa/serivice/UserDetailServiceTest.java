@@ -1,7 +1,7 @@
 package com.mountain.jpa.serivice;
 
 
-import com.mountain.jpa.controller.vo.UserDetailVo;
+import com.mountain.jpa.controller.vo.UserDetailVO;
 import com.mountain.jpa.dao.entity.UserDetail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class UserDetailServiceTest {
         int page = 0, size = 10;
         Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = PageRequest.of(page, size, sort);
-        UserDetailVo param = new UserDetailVo();
+        UserDetailVO param = new UserDetailVO();
         //param.setIntroduction("程序员");
         param.setMinAge(10);
         param.setMaxAge(30);

@@ -4,7 +4,7 @@ package com.mountain.jpa.controller.vo;
  * @Auther kejiefu
  * @Date 2019/12/10 0010
  */
-public class UserDetailVo {
+public class UserDetailVO {
 
     private String userId;
     private Integer minAge;
