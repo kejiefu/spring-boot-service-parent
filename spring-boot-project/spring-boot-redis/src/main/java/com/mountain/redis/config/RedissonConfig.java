@@ -23,7 +23,6 @@ public class RedissonConfig {
     @Resource
     RedisProperties redisProperties;
 
-
     /**
      * 单机模式
      */
@@ -32,6 +31,7 @@ public class RedissonConfig {
         Config config = new Config();
         String address = "redis://" + redisProperties.getHost() + ":" + redisProperties.getPort();
         config.useSingleServer().setAddress(address);
+        config.useSingleServer().setPassword(redisProperties.getPassword());
         RedissonClient redisson = Redisson.create(config);
         return redisson;
     }
