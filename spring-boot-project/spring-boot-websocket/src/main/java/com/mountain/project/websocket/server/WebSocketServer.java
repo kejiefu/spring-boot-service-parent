@@ -4,6 +4,7 @@ import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
@@ -16,6 +17,11 @@ import org.springframework.stereotype.Component;
 
 /**
  * WebSocket服务
+ * TCP黏包拆包
+ * TCP是一个流协议，就是没有界限的一长串二进制数据。TCP作为传输层协议并不不了解上层业务数据的具体含义，它会根据TCP缓冲区的实际情况进行数据包的划分，
+ * 所以在业务上认为是一个完整的包，可能会被TCP拆分成多个包进行发送，也有可能把多个小的包封装成一个大的数据包发送，这就是所谓的TCP粘包和拆包问题。
+ *
+ * socket偏向于底层，而netty是对socket的封装。
  */
 @Component
 public class WebSocketServer implements ApplicationRunner {
@@ -40,6 +46,9 @@ public class WebSocketServer implements ApplicationRunner {
                     pipeline.addLast("aggregator", new HttpObjectAggregator(65536)); // Http消息组装
                     pipeline.addLast("http-chunked", new ChunkedWriteHandler()); // WebSocket通信支持
                     pipeline.addLast("handler", new BananaWebSocketServerHandler()); // WebSocket服务端Handler
+                    //（回车换行分包） 用LineBasedFrameDecoder 来解决需要在发送的数据结尾加上回车换行符，这样LineBasedFrameDecoder 才知道这段数据有没有读取完整。
+                    //改造服务端代码，只需加上LineBasedFrameDecoder 解码器即可,构造函数的参数是数据包的最大长度。
+                    pipeline.addLast(new LineBasedFrameDecoder(10240));
                 }
             });
             // 链接服务器
