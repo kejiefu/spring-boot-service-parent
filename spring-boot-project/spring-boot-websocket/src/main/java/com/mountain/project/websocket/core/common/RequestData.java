@@ -3,42 +3,40 @@ package com.mountain.project.websocket.core.common;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.base.Strings;
 
-import java.util.HashMap;
-import java.util.Map;
+public class RequestData {
 
-public class Response {
-
+    /**
+     * 客户端的唯一id
+     */
     private String requestId;
+    /**
+     * 请求类型
+     */
     private Integer serviceId;
-    private Boolean isSucc;
+    /**
+     * 名称
+     */
     private String name;
+    /**
+     * 消息
+     */
     private String message;
-    private Map<String, String> hadOnline = new HashMap<String, String>(); // <requestId, name>
 
     public String getRequestId() {
         return requestId;
     }
 
-    public Response setRequestId(String requestId) {
+    public RequestData setRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
 
-    public int getServiceId() {
+    public Integer getServiceId() {
         return serviceId;
     }
 
-    public Response setServiceId(Integer serviceId) {
+    public RequestData setServiceId(int serviceId) {
         this.serviceId = serviceId;
-        return this;
-    }
-
-    public Boolean getIsSucc() {
-        return isSucc;
-    }
-
-    public Response setIsSucc(boolean isSucc) {
-        this.isSucc = isSucc;
         return this;
     }
 
@@ -46,7 +44,7 @@ public class Response {
         return name;
     }
 
-    public Response setName(String name) {
+    public RequestData setName(String name) {
         this.name = name;
         return this;
     }
@@ -55,23 +53,14 @@ public class Response {
         return message;
     }
 
-    public Response setMessage(String message) {
+    public RequestData setMessage(String message) {
         this.message = message;
         return this;
     }
 
-    public Map<String, String> getHadOnline() {
-        return hadOnline;
-    }
-
-    public Response setHadOnline(Map<String, String> hadOnline) {
-        this.hadOnline = hadOnline;
-        return this;
-    }
-
-    public static Response create(String json) {
+    public static RequestData create(String json) {
         if (!Strings.isNullOrEmpty(json)) {
-            return JSONObject.parseObject(json, Response.class);
+            return JSONObject.parseObject(json, RequestData.class);
         }
         return null;
     }

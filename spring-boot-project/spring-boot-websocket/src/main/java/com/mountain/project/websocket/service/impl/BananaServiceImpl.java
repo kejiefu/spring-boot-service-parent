@@ -1,9 +1,9 @@
 package com.mountain.project.websocket.service.impl;
 
-import com.mountain.project.websocket.service.BananaCallBack;
-import com.mountain.project.websocket.core.common.CODE;
-import com.mountain.project.websocket.core.common.Request;
+import com.mountain.project.websocket.core.common.CodeEnum;
+import com.mountain.project.websocket.core.common.RequestData;
 import com.google.common.base.Strings;
+import com.mountain.project.websocket.service.BananaService;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.slf4j.Logger;
@@ -12,24 +12,30 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class BananaService implements BananaCallBack {
-	private static final Logger logger = LoggerFactory.getLogger(BananaService.class);
-	
-	public static final Map<String, BananaCallBack> bananaWatchMap = new ConcurrentHashMap<String, BananaCallBack>(); // <requestId, callBack>
-	
+
+public class BananaServiceImpl implements BananaService {
+
+	private static final Logger logger = LoggerFactory.getLogger(BananaServiceImpl.class);
+
+	// <requestId, BananaService>
+	public static final Map<String, BananaService> bananaWatchMap = new ConcurrentHashMap<>();
+
+	//每个BananaService对象都有一个ChannelHandlerContext
+	//管道处理上下文，便于服务器推送数据到客户端
 	private ChannelHandlerContext ctx;
+
 	private String name;
 	
-	public BananaService(ChannelHandlerContext ctx, String name) {
+	public BananaServiceImpl(ChannelHandlerContext ctx, String name) {
 		this.ctx = ctx;
 		this.name = name;
 	}
 
-	public static boolean register(String requestId, BananaCallBack callBack) {
+	public static boolean register(String requestId, BananaService bananaService) {
 		if (Strings.isNullOrEmpty(requestId) || bananaWatchMap.containsKey(requestId)) {
 			return false;
 		}
-		bananaWatchMap.put(requestId, callBack);
+		bananaWatchMap.put(requestId, bananaService);
 		return true;
 	}
 	
@@ -42,7 +48,7 @@ public class BananaService implements BananaCallBack {
 	}
 	
 	@Override
-	public void send(Request request) throws Exception {
+	public void send(RequestData request) throws Exception {
 		if (this.ctx == null || this.ctx.isRemoved()) {
 			throw new Exception("尚未握手成功，无法向客户端发送WebSocket消息");
 		}
@@ -56,9 +62,9 @@ public class BananaService implements BananaCallBack {
 	 * @param requestId
 	 */
 	public static void notifyDownLine(String requestId) {
-		BananaService.bananaWatchMap.forEach((reqId, callBack) -> { // 通知有人下线
-			Request serviceRequest = new Request();
-			serviceRequest.setServiceId(CODE.down_line.code);
+		BananaServiceImpl.bananaWatchMap.forEach((reqId, callBack) -> { // 通知有人下线
+			RequestData serviceRequest = new RequestData();
+			serviceRequest.setServiceId(CodeEnum.DOWN_LINE.code);
 			serviceRequest.setRequestId(requestId);
 			try {
 				callBack.send(serviceRequest);

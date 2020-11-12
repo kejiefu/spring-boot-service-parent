@@ -15,6 +15,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+
 /**
  * WebSocket服务
  * TCP黏包拆包
@@ -31,6 +32,13 @@ public class WebSocketServer implements ApplicationRunner {
     @Value("${websocket.port}")
     private Integer port;
 
+    /**
+     * 通过group方法关联了两个线程组，NioEventLoopGroup是用来处理I/O操作的线程池，
+     * 第一个称为“boss”，用来accept客户端连接，第二个称为“worker”，处理客户端数据的读写操作。当然你也可以只用一个NioEventLoopGroup同时来处理连接和读写
+     * childHandler用来配置具体的数据处理方式 ，可以指定编解码器，处理数据的Handler
+     * @param var1
+     * @throws Exception
+     */
     @Override
     public void run(ApplicationArguments var1) throws Exception {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
@@ -42,13 +50,18 @@ public class WebSocketServer implements ApplicationRunner {
                 protected void initChannel(Channel channel) throws Exception {
                     //每实例一个客户端都会进来一次
                     ChannelPipeline pipeline = channel.pipeline();
-                    pipeline.addLast("http-codec", new HttpServerCodec()); // Http消息编码解码
-                    pipeline.addLast("aggregator", new HttpObjectAggregator(65536)); // Http消息组装
-                    pipeline.addLast("http-chunked", new ChunkedWriteHandler()); // WebSocket通信支持
-                    pipeline.addLast("handler", new BananaWebSocketServerHandler()); // WebSocket服务端Handler
-                    //（回车换行分包） 用LineBasedFrameDecoder 来解决需要在发送的数据结尾加上回车换行符，这样LineBasedFrameDecoder 才知道这段数据有没有读取完整。
-                    //改造服务端代码，只需加上LineBasedFrameDecoder 解码器即可,构造函数的参数是数据包的最大长度。
+                    // Http消息编码解码
+                    pipeline.addLast("http-codec", new HttpServerCodec());
+                    // Http消息组装
+                    pipeline.addLast("aggregator", new HttpObjectAggregator(65536));
+                    // WebSocket通信支持
+                    pipeline.addLast("http-chunked", new ChunkedWriteHandler());
+                    // WebSocket服务端Handler
+                    pipeline.addLast("handler", new BananaWebSocketServerHandler());
+                    //（回车换行分包） 用LineBasedFrameDecoder 来解决需要在发送的数据结尾加上回车换行符，解决粘包拆包
                     pipeline.addLast(new LineBasedFrameDecoder(10240));
+                    //ping
+                    //pipeline.addLast("ping", new IdleStateHandler(60, 20, 60 * 10, TimeUnit.SECONDS));
                 }
             });
             // 链接服务器
@@ -63,6 +76,7 @@ public class WebSocketServer implements ApplicationRunner {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
+
     }
 
 }
