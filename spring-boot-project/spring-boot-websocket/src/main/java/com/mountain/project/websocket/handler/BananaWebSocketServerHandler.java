@@ -1,19 +1,25 @@
-package com.mountain.project.websocket.server;
+package com.mountain.project.websocket.handler;
 
-import com.mountain.project.websocket.service.BananaService;
-import com.mountain.project.websocket.service.impl.BananaServiceImpl;
+import com.google.common.base.Strings;
 import com.mountain.project.websocket.core.common.CodeEnum;
 import com.mountain.project.websocket.core.common.RequestData;
 import com.mountain.project.websocket.core.common.ResponseData;
-import com.google.common.base.Strings;
+import com.mountain.project.websocket.model.RequestParser;
+import com.mountain.project.websocket.service.BananaService;
+import com.mountain.project.websocket.service.impl.BananaServiceImpl;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 
 /**
@@ -85,6 +91,8 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
         if (handshaker == null) {
             WebSocketServerHandshakerFactory.sendUnsupportedVersionResponse(ctx.channel());
         } else {
+            Map<String, String> paramMap = new RequestParser(request).parse(); // 将GET, POST所有请求参数转换成Map对象
+            logger.info("paramMap:{}", paramMap);
             // 向客户端发送websocket握手,完成握手
             handshaker.handshake(ctx.channel(), request);
             // 记录管道处理上下文，便于服务器推送数据到客户端

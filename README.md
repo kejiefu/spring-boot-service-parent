@@ -16,7 +16,7 @@ spring-boot-mongodb:mongodb常用的操作工具类
 
 spring-boot-netty:netty的使用
 
-spring-boot-websocket:基于websocket的聊天
+spring-boot-websocket:js的websocket和后端netty的联合使用
 
 spring-boot-admin:spring-boot的监控项目
 
