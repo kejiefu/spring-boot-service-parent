@@ -8,6 +8,7 @@
 <script src="/socket/map.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
+        document.cookie = "username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
         var uuid = guid(); // uuid在一个会话唯一
         console.log("uuid:" + uuid);
         var nameOnline = ''; // 上线姓名
@@ -25,7 +26,9 @@
             window.WebSocket = window.MozWebSocket;
         }
         if (window.WebSocket) {
-            socket = new WebSocket("ws://127.0.0.1:9090/");
+            console.log("准备去连接...");
+            socket = new WebSocket("ws://127.0.0.1:9090/?token=1");
+            console.log("去连接完成...");
             socket.onmessage = function (event) {
                 console.log("收到服务器消息:" + event.data);
                 if (event.data.indexOf("isSucc") != -1) {// 这里需要判断是客户端请求服务端返回后的消息（response）

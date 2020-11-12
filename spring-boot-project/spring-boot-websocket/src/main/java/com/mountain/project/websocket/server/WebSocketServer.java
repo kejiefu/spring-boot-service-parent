@@ -1,5 +1,6 @@
 package com.mountain.project.websocket.server;
 
+import com.mountain.project.websocket.handler.BananaWebSocketServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -36,6 +37,9 @@ public class WebSocketServer implements ApplicationRunner {
      * 通过group方法关联了两个线程组，NioEventLoopGroup是用来处理I/O操作的线程池，
      * 第一个称为“boss”，用来accept客户端连接，第二个称为“worker”，处理客户端数据的读写操作。当然你也可以只用一个NioEventLoopGroup同时来处理连接和读写
      * childHandler用来配置具体的数据处理方式 ，可以指定编解码器，处理数据的Handler
+     * ChannelHandlerContext 通道处理器上下文。
+     * 当ChannelHandler添加到ChannelPipeline时，每一个处理器都会分配一个上下文与之绑定，生死不离。上下文可以自身处理器与其他的处理器进行交互，
+     * 因为上下文并不会改变处理器本身，所以上下文是安全的。
      * @param var1
      * @throws Exception
      */
