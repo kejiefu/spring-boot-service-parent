@@ -1,4 +1,4 @@
-package com.mountain.project.netty.test.netty;
+package com.mountain.project.netty.test.netty.basics;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;

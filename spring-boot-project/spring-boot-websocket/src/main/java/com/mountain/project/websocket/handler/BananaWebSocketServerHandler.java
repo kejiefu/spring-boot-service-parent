@@ -15,6 +15,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.handler.codec.http.websocketx.*;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +70,31 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
         BananaServiceImpl.notifyDownLine(sessionId);
     }
 
+    private int lossConnectCount = 0;
+
+    /**
+     * 心跳检查,websocket不会触发这个
+     * @param ctx
+     * @param evt
+     * @throws Exception
+     */
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        logger.info("已经5秒未收到客户端的消息了！");
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent event = (IdleStateEvent) evt;
+            if (event.state() == IdleState.READER_IDLE) {
+                lossConnectCount++;
+                if (lossConnectCount > 2) {
+                    logger.info("关闭这个不活跃通道！");
+                    ctx.channel().close();
+                }
+            }
+        } else {
+            super.userEventTriggered(ctx, evt);
+        }
+    }
+
     /**
      * 处理Http请求，完成WebSocket握手<br/>
      * 注意：WebSocket连接第一次请求使用的是Http
@@ -77,7 +104,7 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
      * @throws Exception
      */
     private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        // 如果HTTP解码失败，返回HHTP异常
+        // 如果HTTP解码失败，返回HTTP异常
         if (!request.decoderResult().isSuccess() || (!"websocket".equals(request.headers().get("Upgrade")))) {
             sendHttpResponse(ctx, request, new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.BAD_REQUEST));
             return;
@@ -214,8 +241,9 @@ public class BananaWebSocketServerHandler extends SimpleChannelInboundHandler<Ob
                     BananaServiceImpl.notifyDownLine(requestId);
                     sendWebSocket(response.toJson());
                 }
-
-            } else {
+            } else if (CodeEnum.HEART_BEAT.code.equals(requestData.getServiceId())) {
+                sendWebSocket(response.setIsSucc(true).setMessage("心跳检查成功").toJson());
+            }else {
                 sendWebSocket(response.setIsSucc(false).setMessage("未知请求").toJson());
             }
         } catch (Exception ex) {

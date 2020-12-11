@@ -20,19 +20,23 @@ public class LinkRepositoryImpl implements LinkRepository {
     @Autowired
     MongoTemplate mongoTemplate;
 
+    @Override
     public LinkPo getLinkById(Integer id) {
         Query query = new Query(Criteria.where("id").is(id));
         return mongoTemplate.findOne(query, LinkPo.class);
     }
 
+    @Override
     public LinkPo getLinkByUrl(String url) {
         return null;
     }
 
+    @Override
     public LinkPo saveLink(LinkPo linkPo) {
         return mongoTemplate.save(linkPo);
     }
 
+    @Override
     public long updateLink(LinkPo linkPo) {
         Query query = new Query(Criteria.where("id").is(linkPo.getId()));
         Update update = new Update().set("updateTime", linkPo.getUpdateTime()).set("expireTime", linkPo.getExpireTime());
@@ -41,6 +45,7 @@ public class LinkRepositoryImpl implements LinkRepository {
         return result.getMatchedCount();
     }
 
+    @Override
     public void deleteUserById(Long id) {
         Query query = new Query(Criteria.where("id").is(id));
         mongoTemplate.remove(query, LinkPo.class);

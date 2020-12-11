@@ -9,12 +9,15 @@ import io.netty.handler.codec.LineBasedFrameDecoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -64,8 +67,8 @@ public class WebSocketServer implements ApplicationRunner {
                     pipeline.addLast("handler", new BananaWebSocketServerHandler());
                     //（回车换行分包） 用LineBasedFrameDecoder 来解决需要在发送的数据结尾加上回车换行符，解决粘包拆包
                     pipeline.addLast(new LineBasedFrameDecoder(10240));
-                    //ping
-                    //pipeline.addLast("ping", new IdleStateHandler(60, 20, 60 * 10, TimeUnit.SECONDS));
+                    //ping,心跳检查,websocket不会触发这个
+                    //pipeline.addLast(new IdleStateHandler(5, 5, 0, TimeUnit.SECONDS));
                 }
             });
             // 链接服务器

@@ -8,7 +8,6 @@
 <script src="/socket/map.js" type="text/javascript"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        document.cookie = "username=John Doe; expires=Thu, 18 Dec 2043 12:00:00 GMT";
         var uuid = guid(); // uuid在一个会话唯一
         console.log("uuid:" + uuid);
         var nameOnline = ''; // 上线姓名
@@ -20,16 +19,64 @@
 
         $("#banana").hide();
 
-        // 初始化websocket
+        //socketUrl
+        var socketUrl = 'ws://127.0.0.1:9090/?token=嘻嘻哈哈';
+        //保存websocket对象
         var socket;
         if (!window.WebSocket) {
             window.WebSocket = window.MozWebSocket;
         }
-        if (window.WebSocket) {
-            console.log("准备去连接...");
-            socket = new WebSocket("ws://127.0.0.1:9090/?token=1");
-            console.log("去连接完成...");
+        // reConnect函数节流标识符
+        let heartFlag = true;
+        //心跳机制
+        let heart = {
+            timeOut: 30000,
+            timeObj : null,
+            serverTimeObj : null,
+            start: function () {
+                console.log('start');
+                let self = this;
+                //清除延时器
+                this.timeObj && clearTimeout(this.timeObj);
+                this.serverTimeObj && clearTimeout(this.serverTimeObj);
+                this.timeObj = setTimeout(function () {
+                    //发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
+                    send(JSON.stringify({"requestId": uuid, "serviceId": 1005, "name": name}));
+                    //定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
+                        self.serverTimeObj = setTimeout(function () {
+                            socket.close();
+                            reConnect(socketUrl);
+                        }, self.timeOut)
+                }, this.timeOut)
+            }
+        }
+
+        createWebsocket(socketUrl);
+
+        //建立websocket连接函数
+        function createWebsocket(url) {
+            try {
+                if (window.WebSocket) {
+                    console.log("准备去连接...");
+                    socket = new WebSocket(url);
+                    console.log("去连接完成...");
+                    init();
+                    heart.start();
+                } else {
+                    alert("抱歉，您的浏览器不支持WebSocket协议!");
+                }
+            } catch (e) {
+                //进行重连;
+                console.log('websocket连接错误');
+                reConnect(socketUrl);
+            }
+        }
+
+        //对WebSocket各种事件进行监听
+        function init() {
             socket.onmessage = function (event) {
+                //收到消息表示连接正常，所以重置心跳机制
+                heart.start();
                 console.log("收到服务器消息:" + event.data);
                 if (event.data.indexOf("isSucc") != -1) {// 这里需要判断是客户端请求服务端返回后的消息（response）
                     var response = JSON.parse(event.data);
@@ -94,9 +141,21 @@
             socket.onerror = function (event) {
                 console.log("WebSocket异常!");
             };
-        } else {
-            alert("抱歉，您的浏览器不支持WebSocket协议!");
         }
+
+        //重连函数
+        //因为重连函数会被socket事件频繁触发，所以通过函数节流限制重连请求发送
+        function reConnect(url) {
+            if (!heartFlag) {
+                return;
+            }
+            heartFlag = false;
+            setTimeout(function () {
+                createWebsocket(url);
+                heartFlag = true;
+            }, 3000)
+        }
+
 
         // WebSocket发送请求
         function send(message) {
@@ -154,6 +213,7 @@
             send(JSON.stringify({"requestId": uuid, "serviceId": 1002, "name": nameOnline, "message": message}));
             $("#messageInput").val("");
         });
+
 
     });
 

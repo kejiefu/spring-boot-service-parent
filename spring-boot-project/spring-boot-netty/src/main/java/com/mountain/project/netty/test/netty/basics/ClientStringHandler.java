@@ -1,14 +1,14 @@
-package com.mountain.project.netty.test.netty;
+package com.mountain.project.netty.test.netty.basics;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
-public class ServerStringHandler extends ChannelInboundHandlerAdapter {
+public class ClientStringHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.err.println("server:" + msg.toString());
-        ctx.writeAndFlush(msg.toString() + "你好");
+        System.out.println("client:" + msg.toString());
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
@@ -17,9 +17,9 @@ public class ServerStringHandler extends ChannelInboundHandlerAdapter {
     }
 
     public static void main(String[] args) {
+        String host = "127.0.0.1";
         int port = 2222;
-        new Thread(() -> {
-            new ImServer().run(port);
-        }).start();
+        Channel channel = new ImConnection().connect(host, port);
+        channel.writeAndFlush("kejiefu");
     }
 }

@@ -30,7 +30,8 @@ public enum CodeEnum {
 	ON_LINE(1001, "客户端上线请求"),
 	SEND_MESSAGE(1002, "客户端发送'发送消息'请求"),
 	RECEIVE_MESSAGE(1003, "服务端发送'接收消息'请求"),
-	DOWN_LINE(1004, "客户端下线请求");
+	DOWN_LINE(1004, "客户端下线请求"),
+	HEART_BEAT(1005, "心跳检查");
 
 	public String note;
 	public Integer code;
