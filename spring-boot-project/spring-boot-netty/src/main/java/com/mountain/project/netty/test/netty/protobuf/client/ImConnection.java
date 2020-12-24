@@ -1,10 +1,13 @@
-package com.mountain.project.netty.test.netty.protobuf;
+package com.mountain.project.netty.test.netty.protobuf.client;
 
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import com.mountain.project.netty.test.netty.protobuf.MessageProto;
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.protobuf.ProtobufDecoder;
+import io.netty.handler.codec.protobuf.ProtobufEncoder;
 
 public class ImConnection {
     private Channel channel;
@@ -24,9 +27,9 @@ public class ImConnection {
                 public void initChannel(SocketChannel ch) throws Exception {
                     // 实体类传输数据，protobuf序列化
                     ch.pipeline().addLast("decoder",  
-                            new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));  
+                            new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                     ch.pipeline().addLast("encoder",  
-                            new ProtobufEncoder());  
+                            new ProtobufEncoder());
                     ch.pipeline().addLast(new ClientPoHandlerProto());
                 }
             });

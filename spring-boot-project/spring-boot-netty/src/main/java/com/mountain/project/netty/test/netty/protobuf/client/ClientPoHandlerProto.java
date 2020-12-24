@@ -1,4 +1,8 @@
-package com.mountain.project.netty.test.netty.protobuf;
+package com.mountain.project.netty.test.netty.protobuf.client;
+
+import com.mountain.project.netty.test.netty.protobuf.MessageProto;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 
 public class ClientPoHandlerProto extends ChannelInboundHandlerAdapter {
     @Override

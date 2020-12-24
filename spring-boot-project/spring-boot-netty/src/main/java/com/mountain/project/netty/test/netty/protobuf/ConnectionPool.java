@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionPool {
 	
-	private static Map<String, ChannelHandlerContext> pool = new ConcurrentHashMap<String, ChannelHandlerContext>();
+	private static Map<String, ChannelHandlerContext> pool = new ConcurrentHashMap<>();
 	
 	public static ChannelHandlerContext getChannel(String clientId) {
 		if (clientId == null) {

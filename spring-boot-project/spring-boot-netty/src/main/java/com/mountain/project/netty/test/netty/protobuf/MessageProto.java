@@ -124,7 +124,7 @@ public final class MessageProto {
     }
 
     @Override
-    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+    protected FieldAccessorTable
         internalGetFieldAccessorTable() {
       return MessageProto.internal_static_Message_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
@@ -367,7 +367,7 @@ public final class MessageProto {
 
     @Override
     protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        BuilderParent parent) {
       Builder builder = new Builder(parent);
       return builder;
     }
@@ -384,7 +384,7 @@ public final class MessageProto {
       }
 
       @Override
-      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+      protected FieldAccessorTable
           internalGetFieldAccessorTable() {
         return MessageProto.internal_static_Message_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
@@ -397,7 +397,7 @@ public final class MessageProto {
       }
 
       private Builder(
-          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+          BuilderParent parent) {
         super(parent);
         maybeForceBuilderInitialization();
       }
