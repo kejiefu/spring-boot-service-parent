@@ -27,7 +27,7 @@ public class ImServer {
                                 new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                         ch.pipeline().addLast("encoder",
                                 new ProtobufEncoder());
-                        ch.pipeline().addLast(new ServerPoHandlerProto());
+                        ch.pipeline().addLast(new ServerHandler());
                     }
                 })
                 .option(ChannelOption.SO_BACKLOG, 128)

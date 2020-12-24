@@ -1,6 +1,5 @@
 package com.mountain.project.netty.test.netty.protobuf.server;
 
-import org.springframework.boot.SpringApplication;
 
 /**
  * @author kejiefu
@@ -11,7 +10,7 @@ import org.springframework.boot.SpringApplication;
 public class ImServerApp {
 
     public static void main(String[] args) {
-        int port = 2222;
+        int port = 3333;
         new Thread(() -> {
             new ImServer().run(port);
         }).start();

@@ -30,7 +30,7 @@ public class ImConnection {
                             new ProtobufDecoder(MessageProto.Message.getDefaultInstance()));
                     ch.pipeline().addLast("encoder",  
                             new ProtobufEncoder());
-                    ch.pipeline().addLast(new ClientPoHandlerProto());
+                    ch.pipeline().addLast(new ClientHandler());
                 }
             });
             ChannelFuture f = b.connect(host, port).sync();
