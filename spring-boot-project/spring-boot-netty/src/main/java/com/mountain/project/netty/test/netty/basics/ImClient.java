@@ -8,7 +8,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
-public class ImConnection {
+public class ImClient {
     private Channel channel;
     public Channel connect(String host, int port) {
         doConnect(host, port);
