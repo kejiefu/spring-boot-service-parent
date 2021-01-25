@@ -12,7 +12,7 @@ public class ClientStringHandler extends ChannelInboundHandlerAdapter {
     }
 
     /**
-     * 被移除连接会执行这个方法
+     * 这条连接上添加的所有的业务逻辑处理器都被移除掉后调用
      * @param ctx
      */
     @Override

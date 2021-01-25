@@ -10,6 +10,16 @@ public class ServerStringHandler extends ChannelInboundHandlerAdapter {
         System.err.println("server:" + msg.toString());
         ctx.writeAndFlush(msg.toString() + "你好");
     }
+
+    /**
+     * 这条连接上添加的所有的业务逻辑处理器都被移除掉后调用
+     * @param ctx
+     */
+    @Override
+    public void handlerRemoved(ChannelHandlerContext ctx) {
+        System.out.println("handlerRemoved..." + System.currentTimeMillis());
+    }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();
