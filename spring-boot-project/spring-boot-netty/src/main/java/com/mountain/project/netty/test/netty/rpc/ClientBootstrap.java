@@ -10,9 +10,9 @@ public class ClientBootstrap {
         // 创建一个代理对象
         HelloService service = (HelloService) consumer
                 .createProxy(HelloService.class, providerName);
-        //for (; ; ) {
+        for (; ; ) {
             Thread.sleep(1000);
             System.out.println(service.hello("are you ok ?"));
-        //}
+        }
     }
 }
