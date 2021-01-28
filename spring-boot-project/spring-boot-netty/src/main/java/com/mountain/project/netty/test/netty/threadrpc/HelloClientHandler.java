@@ -1,4 +1,4 @@
-package com.mountain.project.netty.test.netty.rpc;
+package com.mountain.project.netty.test.netty.threadrpc;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -16,6 +16,7 @@ public class HelloClientHandler extends ChannelInboundHandlerAdapter implements 
 
     /**
      * 建立链接触发
+     *
      * @param ctx
      */
     @Override
