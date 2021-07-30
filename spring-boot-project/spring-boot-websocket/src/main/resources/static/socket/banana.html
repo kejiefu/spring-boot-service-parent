@@ -31,8 +31,8 @@
         //心跳机制
         let heart = {
             timeOut: 30000,
-            timeObj : null,
-            serverTimeObj : null,
+            timeObj: null,
+            serverTimeObj: null,
             start: function () {
                 console.log('start');
                 let self = this;
@@ -43,10 +43,10 @@
                     //发送消息，服务端返回信息，即表示连接良好，可以在socket的onmessage事件重置心跳机制函数
                     send(JSON.stringify({"requestId": uuid, "serviceId": 1005, "name": name}));
                     //定义一个延时器等待服务器响应，若超时，则关闭连接，重新请求server建立socket连接
-                        self.serverTimeObj = setTimeout(function () {
-                            socket.close();
-                            reConnect(socketUrl);
-                        }, self.timeOut)
+                    self.serverTimeObj = setTimeout(function () {
+                        socket.close();
+                        reConnect(socketUrl);
+                    }, self.timeOut)
                 }, this.timeOut)
             }
         }
@@ -59,7 +59,8 @@
                 if (window.WebSocket) {
                     console.log("准备去连接...");
                     socket = new WebSocket(url);
-                    console.log("去连接完成...");
+                    console.log(socket.readyState);
+                    console.log("连接完成...");
                     init();
                     heart.start();
                 } else {
@@ -134,6 +135,7 @@
                 $("#name").removeAttr("disabled");
                 $("#onlineBtn").removeAttr("disabled");
                 console.log("已连接服务器");
+                console.log(socket.readyState);
             };
             socket.onclose = function (event) { // WebSocket 关闭
                 console.log("WebSocket已经关闭!");
@@ -162,6 +164,8 @@
             if (!window.WebSocket) {
                 return;
             }
+            console.log(socket.readyState);
+            console.log(WebSocket.OPEN);
             if (socket.readyState == WebSocket.OPEN) {
                 socket.send(message);
             } else {
