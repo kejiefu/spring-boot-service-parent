@@ -36,11 +36,11 @@ public class RedisController {
 
         stringRedisTemplate.opsForValue().set("test", "100", 120, TimeUnit.SECONDS);//向redis里存入数据和设置缓存时间
 
-        //如果键不存在则新增,返回true,存在则不改变已经有的值,,返回flase,文档显示这个不是原子操作
+        //如果键不存在则新增,返回true,存在则不改变已经有的值,,返回false,文档显示这个不是原子操作
         Boolean aBoolean = stringRedisTemplate.opsForValue().setIfAbsent("test1", "1001", 60 * 10000, TimeUnit.SECONDS);
         log.info("aBoolean:{}", aBoolean);
 
-        //如果键不存在则新增,返回true,存在则不改变已经有的值,,返回flase,原子操作
+        //如果键不存在则新增,返回true,存在则不改变已经有的值,,返回false,原子操作
         Boolean aBoolean1 = stringRedisTemplate.opsForValue().setIfAbsent("test2", "1002");
         log.info("aBoolean1:{}", aBoolean1);
 
