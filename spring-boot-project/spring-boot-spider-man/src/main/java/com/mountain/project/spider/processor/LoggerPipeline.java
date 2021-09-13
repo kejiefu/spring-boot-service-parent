@@ -1,4 +1,4 @@
-package com.mountain.project.spider.Processor;
+package com.mountain.project.spider.processor;
 
 import us.codecraft.webmagic.ResultItems;
 import us.codecraft.webmagic.Task;
@@ -17,6 +17,7 @@ public class LoggerPipeline implements Pipeline {
     public LoggerPipeline() {
     }
 
+    @Override
     public void process(ResultItems resultItems, Task task) {
         System.out.println("get page: " + resultItems.getRequest().getUrl());
         Iterator var3 = resultItems.getAll().entrySet().iterator();

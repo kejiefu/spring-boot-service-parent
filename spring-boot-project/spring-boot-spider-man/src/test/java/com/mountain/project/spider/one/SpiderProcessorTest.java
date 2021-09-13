@@ -1,7 +1,7 @@
 package com.mountain.project.spider.one;
 
 import com.mountain.project.spider.Application;
-import com.mountain.project.spider.Processor.LoggerPipeline;
+import com.mountain.project.spider.processor.LoggerPipeline;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
