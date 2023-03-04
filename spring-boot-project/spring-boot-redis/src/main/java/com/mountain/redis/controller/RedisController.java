@@ -7,6 +7,8 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -65,6 +67,13 @@ public class RedisController {
         stringRedisTemplate.opsForSet().isMember("red_123", "1");//根据key查看集合中是否存在指定数据
 
         stringRedisTemplate.opsForSet().members("red_123");//根据key获取set集合
+
+        List<String> stringList = new ArrayList<>();
+        stringList.add("test2");
+        stringList.add("test");
+        stringList.add("test1");
+        //查询返回的结果，和键的顺序是一一对应的，如果没查到，会返回null值。
+        stringRedisTemplate.opsForValue().multiGet(stringList);
 
 
     }
